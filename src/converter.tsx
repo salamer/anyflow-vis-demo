@@ -1,11 +1,12 @@
 import AnyFlowConfig from "./model";
-import { Graph, Node, Path, Cell, Model } from '@antv/x6'
-function AnyFlowNode2VisNode(config: AnyFlowConfig): Model.FromJSONData {
-    
+// import { Graph, Node, Path, Cell, Model } from '@antv/x6'
+import G6, { GraphData } from '@antv/g6';
+function AnyFlowNode2VisNode(config: AnyFlowConfig): GraphData {
+
     var edges: Array<[string, string]> = [];
     var nodes: Array<string> = [];
 
-    const data: Model.FromJSONData = {
+    const data: GraphData = {
         nodes: [],
         edges: [],
     }
@@ -15,24 +16,28 @@ function AnyFlowNode2VisNode(config: AnyFlowConfig): Model.FromJSONData {
         for (let dep of node.deps) {
             edges.push([dep, node.name]);
         }
+
+        console.log("xxx", node.params)
+
+        var params = node.params!.toString()
+
+        data.nodes!.push({
+            "id": node.name,
+            "name": node.name,
+            "dataType": "node",
+            "data": {
+                "label": node.name,
+            },
+            params: params,
+        })
     });
 
     edges.forEach((edge) => {
         data.edges!.push({
             "id": edge[0] + "-" + edge[1],
-            "shape": "dag-edge",
+            // "label": edge[0] + "-" + edge[1],
             "source": edge[0],
             "target": edge[1],
-        })
-    })
-
-    nodes.forEach((cell) => {
-        data.nodes!.push({
-            "id": cell,
-            "shape": "dag-node",
-            "data" : {
-                "label": cell,
-            }
         })
     })
 
