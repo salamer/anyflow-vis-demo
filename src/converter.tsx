@@ -3,7 +3,7 @@ import AnyFlowConfig from "./model";
 import G6, { GraphData } from '@antv/g6';
 function AnyFlowNode2VisNode(config: AnyFlowConfig): GraphData {
 
-    var edges: Array<[string, string]> = [];
+    var edges: Array<[string, string, number]> = [];
     var nodes: Array<string> = [];
 
     const data: GraphData = {
@@ -12,10 +12,17 @@ function AnyFlowNode2VisNode(config: AnyFlowConfig): GraphData {
     }
 
     config.nodes.forEach((node) => {
-        nodes.push(node.name);
-        for (let dep of node.deps) {
-            edges.push([dep, node.name]);
+        nodes.push(node.name)
+        var anchorList = []
+        anchorList.push([0.5, 1])
+        let anchorStep = 1.0 / (node.deps.length + 1)
+        for (var i =0; i < node.deps.length; i++) {
+            let dep = node.deps[i];
+            edges.push([dep, node.name, i + 1]);
+            anchorList.push([(i + 1) *anchorStep, 0])
         }
+
+
 
         console.log("xxx", node.params)
 
@@ -28,16 +35,20 @@ function AnyFlowNode2VisNode(config: AnyFlowConfig): GraphData {
             "data": {
                 "label": node.name,
             },
-            params: params,
+            "params": params,
+            "anchorPoints": anchorList,
         })
     });
 
     edges.forEach((edge) => {
+        let order = String(edge[2] - 1)
         data.edges!.push({
             "id": edge[0] + "-" + edge[1],
-            // "label": edge[0] + "-" + edge[1],
+            "label": order,
             "source": edge[0],
             "target": edge[1],
+            "targetAnchor": edge[2],
+            "sourceAnchor": 0,
         })
     })
 

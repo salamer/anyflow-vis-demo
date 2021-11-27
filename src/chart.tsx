@@ -53,8 +53,8 @@ const Chart: React.FC<IProps> = (props) => {
     if (!graph) {
       graph = new G6.Graph({
         container: ref.current,
-        width: 800,
-        height: 800,
+        width: window.innerHeight,
+        height: window.innerWidth,
         modes: {
           default: ['drag-canvas', 'zoom-canvas', 'drag-node', {
             type: 'tooltip',
