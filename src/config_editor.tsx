@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import yaml from 'js-yaml';
 import MonacoEditor from 'react-monaco-editor';
+import Editor from "@monaco-editor/react";
 import AnyFlowConfig from "./model"
 import anyflow_config_data from "./data.json"
 import { Input } from 'antd';
@@ -14,28 +15,35 @@ interface Iprops {
 
 const ConfigEditor: React.FC<Iprops> = (props) => {
 
-    const onChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-        console.log('Change:', e.target.value);
-        // const loadOpts : yaml.LoadOptions = {
-        //     json: true,
-        // };
-        // try {
-        //     const data = yaml.load(e.target.value, loadOpts) as ;
-        //     console.log("xxx", data);
-        // } catch (e) {
-        //     console.log(e);
-        // }
-        const text: AnyFlowConfig = JSON.parse(e.target.value);
-        props.textChange(text);
+
+
+    const onChange = (value: string | undefined, e: any) => {
+        console.log('Change:', value);
+        if (value !== undefined) {
+            const text: AnyFlowConfig = JSON.parse(value);
+            props.textChange(text);
+        }
     };
 
     const options = {
         selectOnLineNumbers: true
     };
 
-    props.textChange(anyflow_config_data);
+    // useEffect(() => {
+    //     props.textChange(anyflow_config_data);
+    // });
 
-    return <TextArea showCount onChange={onChange} value={JSON.stringify(anyflow_config_data, null, 4)}/>
+
+
+    // return <TextArea showCount onChange={onChange} value={JSON.stringify(anyflow_config_data, null, 4)}/>
+    return (
+        <Editor
+            height="90vh"
+            defaultLanguage="javascript"
+            defaultValue={JSON.stringify(anyflow_config_data, null, 4)}
+            onChange={onChange}
+        />
+    )
 }
 
 export default ConfigEditor;

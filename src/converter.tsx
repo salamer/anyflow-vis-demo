@@ -23,9 +23,14 @@ function AnyFlowNode2VisNode(config: AnyFlowConfig): GraphinData {
             anchorList.push([(i + 1) *anchorStep, 0])
         }
 
-        console.log("xxx", node.params)
-
-        var params = node.params!.toString()
+        // console.log("xxx", node.params)
+        var params = "{}";
+        // if (node.params === undefined) {
+        //     var params = "{}"
+        // } else {
+        //     var params = node.params.toString()
+        // }
+        
         const parimaryColor = '#ff6a00';
         data.nodes!.push({
             "id": node.name,

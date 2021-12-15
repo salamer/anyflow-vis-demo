@@ -40,8 +40,6 @@ const Chart: React.FC<IProps> = (props) => {
     Hoverable, // Hover操作
   } = Behaviors;
   const data = AnyFlowNode2VisNode(props.data);
-  const data2 = Utils.mock(8).tree().graphin();
-  console.log(JSON.stringify(data2));
   console.log(data);
   const ref: any = React.useRef(null);
   return (
